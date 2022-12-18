@@ -1,9 +1,5 @@
 
-CC := clang
-CFLAGS := -Wall
-
-RM := rm -f
-
+# Target Info
 
 TARGET_NAME := crow
 
@@ -19,12 +15,27 @@ OBJECTS := $(patsubst $(DIR_SRC)/%.c, $(DIR_OBJ)/%.o, $(SOURCES))
 CLEAN_LIST := $(TARGET) $(OBJECTS)
 
 
+# Commands
+
+CC := clang
+CFLAGS := -std=c17 -c -g -Wall -Werror
+
+LD := clang
+LFLAGS := -std=c17 -dynamiclib
+
+RM := rm -f
+
+
+# Targets
+
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -dynamiclib $(OBJECTS) -o $(TARGET)
+	$(LD) $(LFLAGS) $(OBJECTS) -o $(TARGET)
 
 $(OBJECTS): $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
+
+# Phony targets
 
 default: mkdirs all
 
